@@ -3,10 +3,6 @@
 'use strict'
 
 const prog = require('caporal')
-// const glob = require('glob')
-// const fs = require('fs')
-// const path = require('path')
-
 const pkg = require('./package.json')
 const esCheck = require('./index')
 const argsArray = process.argv
