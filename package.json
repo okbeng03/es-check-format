@@ -1,0 +1,38 @@
+{
+  "name": "es-check-format",
+  "version": "1.0.0",
+  "description": "es-check formatting output",
+  "main": "index.js",
+  "files": [
+    "index.js"
+  ],
+  "bin": {
+    "es-check-format": "cli.js"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/okbeng03/es-check-format.git"
+  },
+  "keywords": [
+    "es",
+    "check",
+    "sourcemap",
+    "format",
+    "output"
+  ],
+  "author": "okbeng03",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/okbeng03/es-check-format/issues"
+  },
+  "homepage": "https://github.com/okbeng03/es-check-format#readme",
+  "dependencies": {
+    "acorn": "^7.1.1",
+    "caporal": "^1.3.0",
+    "glob": "^7.1.6",
+    "source-map": "^0.7.3"
+  }
+}
