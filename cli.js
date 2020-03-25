@@ -2,6 +2,8 @@
 
 'use strict'
 
+const fs = require('fs')
+const path = require('path')
 const prog = require('caporal')
 const pkg = require('./package.json')
 const esCheck = require('./index')
@@ -31,9 +33,22 @@ prog
   .action((args, options, logger) => {
 
     const context = process.cwd()
-    const files = args.files
+    const configFilePath = path.resolve(context, '.escheckrc')
+    let config = {}
+
+    /**
+     * Check for a configuration file. If one exists, default to those options
+     * if no command line arguments are passed in
+     */
+    if (fs.existsSync(configFilePath)) {
+      config = JSON.parse(fs.readFileSync(configFilePath))
+    }
+
+    const files = args.files.length
       ? [].concat(args.files)
-      : []
+      : config.files
+        ? [].concat(config.files)
+        : []
 
     if (!files.length) {
       logger.error(
