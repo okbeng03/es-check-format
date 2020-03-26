@@ -92,11 +92,11 @@ function check (options = {}) {
       e = '10'
       break
     default:
-      throw new Error('Invalid ecmaScript version, please pass a valid version');
+      reject(new Error('Invalid ecmaScript version, please pass a valid version'))
   }
 
   const errArray = []
-  const globOpts = { root: context, nodir: true }
+  const globOpts = { cwd: context, root: context, nodir: true }
   const acornOpts = { ecmaVersion: e, silent: true }
   const filterForIgnore = (globbedFiles) => {
     if (pathsToIgnore && pathsToIgnore.length > 0) {
@@ -121,7 +121,7 @@ function check (options = {}) {
        * pattern => glob or array
        */
       const globbedFiles = glob.sync(pattern, globOpts)
-      console.log(globOpts, pattern, globbedFiles)
+
       if (globbedFiles.length === 0) {
         reject(new Error(`ES-Check: Did not find any files to check for ${pattern}.`))
       }
@@ -129,7 +129,7 @@ function check (options = {}) {
       const filteredFiles = filterForIgnore(globbedFiles);
 
       filteredFiles.forEach(async (file) => {
-        const code = fs.readFileSync(file, 'utf8')
+        const code = fs.readFileSync(path.resolve(globOpts.root, file), 'utf8')
 
         try {
           acorn.parse(code, acornOpts)
