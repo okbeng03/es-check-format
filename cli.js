@@ -101,6 +101,8 @@ prog
       } else {
         logger.error(`ES-Check: there were no ES version matching errors!  🎉`)
       }
+    }).catch(err => {
+      logger.error(`ES-Check Error: ${err.message}`)
     })
   })
 

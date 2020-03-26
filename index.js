@@ -42,7 +42,7 @@ function check (options = {}) {
   const files = [].concat(configs.files)
 
   if (!files || !files.length) {
-    throw new Error('No files were passed in please pass in a list of files to es-check!')
+    reject(new Error('No files were passed in please pass in a list of files to es-check!'))
   }
 
   /**
@@ -121,9 +121,9 @@ function check (options = {}) {
        * pattern => glob or array
        */
       const globbedFiles = glob.sync(pattern, globOpts)
-
+      console.log(globOpts, pattern, globbedFiles)
       if (globbedFiles.length === 0) {
-        throw new Error(`ES-Check: Did not find any files to check for ${pattern}.`)
+        reject(new Error(`ES-Check: Did not find any files to check for ${pattern}.`))
       }
 
       const filteredFiles = filterForIgnore(globbedFiles);
