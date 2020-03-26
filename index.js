@@ -147,7 +147,7 @@ function check (options = {}) {
     })
 
     if (errArray.length) {
-      const errors = await getSource(errArray)
+      const errors = await getSource(globOpts.root, errArray)
       resolve(errors)
     } else {
       resolve([])
@@ -155,11 +155,11 @@ function check (options = {}) {
   })
 }
 
-async function getSource (errors) {
+async function getSource (root, errors) {
   for (let err of errors) {
     try {
       // 如果有sourcemap文件，通过sourcemap定位到源文件
-      const source = fs.readFileSync(err.file + '.map').toString()
+      const source = fs.readFileSync(path.resolve(root, err.file + '.map')).toString()
       const consumer = await new sourceMap.SourceMapConsumer(source)
       const sm = consumer.originalPositionFor({
         line: err.line,
