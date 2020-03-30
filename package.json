@@ -1,6 +1,6 @@
 {
   "name": "es-check-format",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "es-check formatting output",
   "main": "index.js",
   "files": [

@@ -28,94 +28,94 @@ function check (options = {}) {
   const configFilePath = path.resolve(options.context || configs.context, '.escheckrc')
   let config = {}
 
-  /**
-   * Check for a configuration file. If one exists, default to those options
-   * if no command line arguments are passed in
-   */
-  if (fs.existsSync(configFilePath)) {
-    config = JSON.parse(fs.readFileSync(configFilePath))
-  }
-
-  Object.assign(configs, config, options)
-
-  const { context, ecmaVersion, module: esmodule, allowHashBang, not: pathsToIgnore } = configs
-  const files = [].concat(configs.files)
-
-  if (!files || !files.length) {
-    reject(new Error('No files were passed in please pass in a list of files to es-check!'))
-  }
-
-  /**
-   * define ecmaScript version
-   * - Default ecmaScript version is '5'
-   */
-  let e
-
-  switch (ecmaVersion) {
-    case 'es3':
-      e = '3'
-      break
-    case 'es4':
-      e = '4'
-      break
-    case 'es5':
-      e = '5'
-      break
-    case 'es6':
-      e = '6'
-      break
-    case 'es7':
-      e = '7'
-      break
-    case 'es8':
-      e = '8'
-      break
-    case 'es9':
-      e = '9'
-      break
-    case 'es10':
-      e = '10'
-      break
-    case 'es2015':
-      e = '6'
-      break
-    case 'es2016':
-      e = '7'
-      break
-    case 'es2017':
-      e = '8'
-      break
-    case 'es2018':
-      e = '9'
-      break
-    case 'es2019':
-      e = '10'
-      break
-    default:
-      reject(new Error('Invalid ecmaScript version, please pass a valid version'))
-  }
-
-  const errArray = []
-  const globOpts = { cwd: context, root: context, nodir: true }
-  const acornOpts = { ecmaVersion: e, silent: true }
-  const filterForIgnore = (globbedFiles) => {
-    if (pathsToIgnore && pathsToIgnore.length > 0) {
-      const filtered = globbedFiles.filter((filePath) => !pathsToIgnore
-        .some(ignoreValue => filePath.includes(ignoreValue)))
-      return filtered
-    }
-    return globbedFiles
-  }
-
-  if (esmodule) {
-    acornOpts.sourceType = 'module'
-  }
-
-  if (allowHashBang) {
-    acornOpts.allowHashBang = true
-  }
-
   return new Promise(async (resolve, reject) => {
+    /**
+     * Check for a configuration file. If one exists, default to those options
+     * if no command line arguments are passed in
+     */
+    if (fs.existsSync(configFilePath)) {
+      config = JSON.parse(fs.readFileSync(configFilePath))
+    }
+
+    Object.assign(configs, config, options)
+
+    const { context, ecmaVersion, module: esmodule, allowHashBang, not: pathsToIgnore } = configs
+    const files = [].concat(configs.files)
+
+    if (!files || !files.length) {
+      reject(new Error('No files were passed in please pass in a list of files to es-check!'))
+    }
+
+    /**
+     * define ecmaScript version
+     * - Default ecmaScript version is '5'
+     */
+    let e
+
+    switch (ecmaVersion) {
+      case 'es3':
+        e = '3'
+        break
+      case 'es4':
+        e = '4'
+        break
+      case 'es5':
+        e = '5'
+        break
+      case 'es6':
+        e = '6'
+        break
+      case 'es7':
+        e = '7'
+        break
+      case 'es8':
+        e = '8'
+        break
+      case 'es9':
+        e = '9'
+        break
+      case 'es10':
+        e = '10'
+        break
+      case 'es2015':
+        e = '6'
+        break
+      case 'es2016':
+        e = '7'
+        break
+      case 'es2017':
+        e = '8'
+        break
+      case 'es2018':
+        e = '9'
+        break
+      case 'es2019':
+        e = '10'
+        break
+      default:
+        reject(new Error('Invalid ecmaScript version, please pass a valid version'))
+    }
+
+    const errArray = []
+    const globOpts = { cwd: context, root: context, nodir: true }
+    const acornOpts = { ecmaVersion: e, silent: true }
+    const filterForIgnore = (globbedFiles) => {
+      if (pathsToIgnore && pathsToIgnore.length > 0) {
+        const filtered = globbedFiles.filter((filePath) => !pathsToIgnore
+          .some(ignoreValue => filePath.includes(ignoreValue)))
+        return filtered
+      }
+      return globbedFiles
+    }
+
+    if (esmodule) {
+      acornOpts.sourceType = 'module'
+    }
+
+    if (allowHashBang) {
+      acornOpts.allowHashBang = true
+    }
+
     files.forEach((pattern) => {
       /**
        * pattern => glob or array
